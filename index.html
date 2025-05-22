@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de ACLs en Routers Cisco - Tutorial Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            background: white;
+            border: 1px solid #e3e6ea;
+            border-radius: 8px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: url('umg.png') center/cover;
+            border-radius: 8px;
+            margin: 0 auto 30px;
+            border: 2px solid #27ae60;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .creator-info {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #27ae60;
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .creator-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .creator-details {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid #e3e6ea;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            font-weight: 600;
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 10px;
+        }
+
+        .objective-box {
+            background: #1e3a8a;
+            color: white;
+            padding: 30px;
+            border-radius: 6px;
+            margin: 25px 0;
+        }
+
+        .objective-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .scenario-card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .scenario-number {
+            background: #27ae60;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .scenario-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .scenario-description {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .tech-item {
+            background: #1e3a8a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .video-section {
+            background: #dc2626;
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .video-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .video-description {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .youtube-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .youtube-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .resources-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .resource-box {
+            background: #f0fdf4;
+            padding: 40px;
+            border-radius: 6px;
+            border: 1px solid #bbf7d0;
+            display: inline-block;
+            max-width: 450px;
+            margin-bottom: 25px;
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .resource-title {
+            color: #166534;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .resource-description {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #219a52;
+            transform: translateY(-1px);
+        }
+
+        .content-list {
+            background: #f0f9ff;
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #bae6fd;
+            text-align: left;
+        }
+
+        .content-list h4 {
+            color: #0c4a6e;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .content-list ul {
+            color: #0c4a6e;
+            margin-left: 20px;
+            line-height: 1.7;
+        }
+
+        .prerequisites-box {
+            background: #fffbeb;
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #fed7aa;
+        }
+
+        .prerequisites-box strong {
+            color: #92400e;
+        }
+
+        .prerequisites-box ul {
+            margin: 15px 0 0 20px;
+            line-height: 1.7;
+            color: #92400e;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-title {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .benefit-description {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 50px;
+            padding: 25px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e3e6ea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .header, .section {
+                padding: 25px 20px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-stack {
+                gap: 10px;
+            }
+            
+            .tech-item {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .video-title {
+                font-size: 1.5rem;
+            }
+            
+            .creator-info {
+                padding: 15px;
+            }
+            
+            .objective-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="logo"></div>
+            <h1 class="main-title">Configuración de ACLs en Routers Cisco</h1>
+            <p class="subtitle">Control de Acceso en Redes con Packet Tracer</p>
+            <div class="creator-info">
+                <div class="creator-name">Santos Benitez Santiago Simon Hernandez</div>
+                <div class="creator-details">
+                    Carnet: 2290 21 9304<br>
+                    Universidad Mariano Gálvez de Guatemala<br>
+                    Curso: Redes de la Computadora II
+                </div>
+            </div>
+        </div>
+
+        <!-- Objective Section -->
+        <div class="section">
+            <h2 class="section-title">Objetivo del Tutorial</h2>
+            <div class="objective-box">
+                <div class="objective-title">¿Qué aprenderás?</div>
+                <p>En este tutorial completo aprenderás a implementar y configurar Listas de Control de Acceso (ACLs) en routers Cisco para controlar el flujo de tráfico en una red. Dominarás las técnicas para permitir o denegar el acceso de dispositivos específicos a recursos de red, fortaleciendo la seguridad y gestionando permisos de manera eficiente.</p>
+            </div>
+        </div>
+
+        <!-- Scenarios Section -->
+        <div class="section">
+            <h2 class="section-title">Escenarios de Configuración</h2>
+            <p style="margin-bottom: 30px; color: #6b7280;">Exploraremos tres escenarios prácticos donde configuraremos ACLs para controlar el acceso de diferentes PCs a un servidor central:</p>
+            
+            <div class="scenarios-grid">
+                <div class="scenario-card">
+                    <div class="scenario-number">1</div>
+                    <div class="scenario-title">Acceso Exclusivo PC0</div>
+                    <p class="scenario-description">Configuraremos ACLs para permitir que únicamente la PC0 (192.168.1.10) pueda acceder al servidor, mientras que PC1 y PC2 serán bloqueadas.</p>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-number">2</div>
+                    <div class="scenario-title">Acceso Exclusivo PC1</div>
+                    <p class="scenario-description">Modificaremos la configuración para otorgar acceso exclusivo a PC1 (192.168.1.11), denegando el acceso a PC0 y PC2.</p>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-number">3</div>
+                    <div class="scenario-title">Acceso Exclusivo PC2</div>
+                    <p class="scenario-description">Finalmente, configuraremos las ACLs para que solo PC2 (192.168.1.12) tenga acceso al servidor, bloqueando a las demás PCs.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="section">
+            <h2 class="section-title">Tecnologías Utilizadas</h2>
+            <div class="tech-stack">
+                <div class="tech-item">Cisco Packet Tracer</div>
+                <div class="tech-item">Router Cisco</div>
+                <div class="tech-item">ACLs Estándar</div>
+                <div class="tech-item">IOS Commands</div>
+                <div class="tech-item">Network Security</div>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-title">Tutorial en Video</div>
+            <div class="video-description">
+                Mira el tutorial completo paso a paso. En este video detallado te explico toda la configuración práctica, 
+                desde la teoría básica hasta la implementación completa de cada escenario.
+            </div>
+            <a href="[AQUÍ_VA_TU_ENLACE_DE_YOUTUBE]" class="youtube-link" target="_blank">
+                Ver Tutorial Completo en YouTube
+            </a>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="section">
+            <h2 class="section-title">Recursos del Proyecto</h2>
+            <div class="resources-section">
+                <div class="resource-box">
+                    <div class="resource-icon">📦</div>
+                    <h3 class="resource-title">Archivo Packet Tracer</h3>
+                    <p class="resource-description">Descarga el archivo .pkt con toda la topología de red configurada y lista para usar</p>
+                    <a href="[ENLACE_AL_ARCHIVO_PKT]" class="download-btn">
+                        Descargar archivo .pkt
+                    </a>
+                </div>
+            </div>
+            
+            <div class="content-list">
+                <h4>Contenido incluido en el archivo:</h4>
+                <ul>
+                    <li>Topología de red completa con router Cisco y 3 PCs</li>
+                    <li>Servidor configurado con IP 192.168.1.200</li>
+                    <li>Configuraciones base para cada escenario</li>
+                    <li>Dispositivos con IPs asignadas y listas para usar</li>
+                    <li>Estructura preparada para implementar ACLs</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Prerequisites Section -->
+        <div class="section">
+            <h2 class="section-title">Conocimientos Previos</h2>
+            <div class="prerequisites-box">
+                <strong>Para aprovechar al máximo este tutorial, es recomendable tener:</strong>
+                <ul>
+                    <li>Conocimientos básicos de redes (TCP/IP, subnetting)</li>
+                    <li>Familiaridad con Cisco Packet Tracer</li>
+                    <li>Conceptos básicos de comandos IOS de Cisco</li>
+                    <li>Comprensión de seguridad de red básica</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="section">
+            <h2 class="section-title">Lo que lograrás</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-title">Seguridad de Red</div>
+                    <p class="benefit-description">Implementar controles de acceso robustos para proteger recursos críticos</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚙️</div>
+                    <div class="benefit-title">Configuración Práctica</div>
+                    <p class="benefit-description">Dominar la configuración de ACLs en equipos Cisco reales</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">Control Granular</div>
+                    <p class="benefit-description">Gestionar permisos específicos por dispositivo o usuario</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Santos Benitez Santiago Simon Hernandez</strong> - Carnet: 2290 21 9304</p>
+            <p style="margin-top: 8px;">Universidad Mariano Gálvez de Guatemala - Redes de la Computadora II</p>
+        </div>
+    </div>
+</body>
+</html>
